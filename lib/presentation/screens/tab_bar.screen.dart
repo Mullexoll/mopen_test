@@ -42,8 +42,18 @@ class TabBarScreenState extends State<TabBarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        final navigator = Navigator.of(context);
+        bool value = await _onWillPop();
+        if (value) {
+          navigator.pop();
+        }
+      },
       child: Scaffold(
         body: IndexedStack(
           index: _currentIndex,
