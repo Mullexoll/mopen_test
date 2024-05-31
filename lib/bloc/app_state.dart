@@ -14,6 +14,8 @@ final class AppLoaded extends AppState {
   final List<Movie> searchedMovies;
   final List<Movie> favoritesMovies;
   final bool isSearching;
+  final String connectionStatus;
+  final String currentLocal;
 
   AppLoaded({
     required this.topMovies,
@@ -21,6 +23,8 @@ final class AppLoaded extends AppState {
     required this.searchedMovies,
     required this.isSearching,
     required this.favoritesMovies,
+    required this.connectionStatus,
+    required this.currentLocal,
   });
 
   AppLoaded copyWith({
@@ -29,6 +33,8 @@ final class AppLoaded extends AppState {
     List<Movie>? searchedMovies,
     List<Movie>? favoritesMovies,
     bool? isSearching,
+    String? connectionStatus,
+    String? currentLocal,
   }) {
     return AppLoaded(
       topMovies: topMovies ?? this.topMovies,
@@ -36,6 +42,8 @@ final class AppLoaded extends AppState {
       searchedMovies: searchedMovies ?? this.searchedMovies,
       favoritesMovies: favoritesMovies ?? this.favoritesMovies,
       isSearching: isSearching ?? this.isSearching,
+      connectionStatus: connectionStatus ?? this.connectionStatus,
+      currentLocal: currentLocal ?? this.currentLocal,
     );
   }
 
@@ -46,5 +54,7 @@ final class AppLoaded extends AppState {
         searchedMovies,
         favoritesMovies,
         isSearching,
+        connectionStatus,
+        currentLocal,
       ];
 }

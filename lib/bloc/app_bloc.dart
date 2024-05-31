@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 import 'package:meta/meta.dart';
+import 'package:mopen_test/constants/connection_status_consts.dart';
 import 'package:mopen_test/constants/genres_const.dart';
 import 'package:mopen_test/infrastructure/datasource/fetch_searched_movies.api.dart';
 import 'package:mopen_test/infrastructure/datasource/fetch_top_movies.api.dart';
@@ -21,6 +23,7 @@ part 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   late Isar _isarRepository;
   final APIService apiService = APIService();
+  final Connectivity _connectivity = Connectivity();
 
   AppBloc() : super(AppLoading()) {
     on<FetchTopMovies>(_onFetchTopMovies);
@@ -29,39 +32,62 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<ClearSearchedList>(_onClearSearchedList);
     on<InitLocalDB>(_onInitLocalDB);
     on<FavoriteHandler>(_onFavoriteHandler);
+    on<AddCurrentLocal>(_onAddCurrentLocal);
   }
 
   FutureOr<void> _onFetchTopMovies(
     FetchTopMovies event,
     Emitter<AppState> emit,
   ) async {
-    final List<Movie>? topMovies =
-        await FetchTopMoviesAPI(apiService: apiService).fetch();
+    final String connectionStatus = await _checkConnectivity();
 
-    if (topMovies != null) {
-      final List<Movie> moviesWithGenres = mapMoviesWithGenres(
-        topMovies,
-        GenresConst().genres,
-      );
+    if (connectionStatus == ConnectionStatusConsts.connected) {
+      final List<Movie>? topMovies =
+          await FetchTopMoviesAPI(apiService: apiService).fetch();
 
-      if (state is AppLoaded) {
-        emit(
-          (state as AppLoaded).copyWith(
-            topMovies: moviesWithGenres,
-          ),
+      if (topMovies != null) {
+        final List<Movie> moviesWithGenres = mapMoviesWithGenres(
+          topMovies,
+          GenresConst().genres,
         );
-      } else {
-        emit(
-          AppLoaded(
+
+        if (state is AppLoaded) {
+          emit(
+            (state as AppLoaded).copyWith(
+              topMovies: moviesWithGenres,
+            ),
+          );
+        } else {
+          emit(
+            AppLoaded(
+              latestMovies: List.from([]),
+              searchedMovies: List.from([]),
+              favoritesMovies: List.from([]),
+              topMovies: moviesWithGenres,
+              isSearching: false,
+              connectionStatus: connectionStatus,
+              currentLocal: 'en',
+            ),
+          );
+        }
+        add(InitLocalDB());
+      }
+    } else if (connectionStatus == ConnectionStatusConsts.noConnection) {
+      await initIsarRepository();
+      final List<Movie> favoriteRepositories =
+          await RepositoryIsarInstanceUseCase(_isarRepository)
+              .getAllRepositories();
+
+      emit(
+        AppLoaded(
+            topMovies: List.from([]),
             latestMovies: List.from([]),
             searchedMovies: List.from([]),
-            favoritesMovies: List.from([]),
-            topMovies: moviesWithGenres,
             isSearching: false,
-          ),
-        );
-      }
-      add(InitLocalDB());
+            favoritesMovies: favoriteRepositories,
+            connectionStatus: connectionStatus,
+            currentLocal: 'en'),
+      );
     }
   }
 
@@ -92,6 +118,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             searchedMovies: List.from([]),
             favoritesMovies: List.from([]),
             isSearching: false,
+            connectionStatus: ConnectionStatusConsts.unknownConnection,
+            currentLocal: 'en',
           ),
         );
       }
@@ -164,12 +192,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     InitLocalDB event,
     Emitter<AppState> emit,
   ) async {
-    final dir = await getApplicationDocumentsDirectory();
-    _isarRepository = await Isar.open(
-      [MovieSchema],
-      name: 'FavoriteMovieRepositoryIsarDB',
-      directory: dir.path,
-    );
+    await initIsarRepository();
     final List<Movie> topMovies = (state as AppLoaded).topMovies;
     final List<Movie> latestMovies = (state as AppLoaded).latestMovies;
     final List<Movie> favoriteRepositories =
@@ -308,5 +331,57 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         genres: movie.genres,
       );
     }).toList();
+  }
+
+  Future<String> _checkConnectivity() async {
+    String connectionStatus = ConnectionStatusConsts.unknownConnection;
+
+    List<ConnectivityResult> result = [];
+    try {
+      result = await _connectivity.checkConnectivity();
+    } catch (e) {
+      result.add(ConnectivityResult.none);
+    }
+
+    switch (result.first) {
+      case ConnectivityResult.none:
+        connectionStatus = ConnectionStatusConsts.noConnection;
+        break;
+      case ConnectivityResult.mobile:
+      case ConnectivityResult.wifi:
+        connectionStatus = ConnectionStatusConsts.connected;
+        break;
+      default:
+        connectionStatus = ConnectionStatusConsts.unknownConnection;
+        break;
+    }
+
+    return connectionStatus;
+  }
+
+  initIsarRepository() async {
+    final dir = await getApplicationDocumentsDirectory();
+    _isarRepository = await Isar.open(
+      [MovieSchema],
+      name: 'FavoriteMovieRepositoryIsarDB',
+      directory: dir.path,
+    );
+  }
+
+  FutureOr<void> _onAddCurrentLocal(
+    AddCurrentLocal event,
+    Emitter<AppState> emit,
+  ) {
+    if (state is AppLoading) {
+      emit(AppLoaded(
+        latestMovies: List.from([]),
+        topMovies: List.from([]),
+        searchedMovies: List.from([]),
+        favoritesMovies: List.from([]),
+        isSearching: false,
+        connectionStatus: ConnectionStatusConsts.unknownConnection,
+        currentLocal: event.currentLocal,
+      ));
+    }
   }
 }

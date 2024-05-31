@@ -66,8 +66,11 @@ class _DetailScreenState extends State<DetailScreen> {
                       SizedBox(
                         width: 351,
                         child: Text(
-                          widget.movie.originalTitle,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          widget.movie.title,
+                          style:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    fontFamily: 'Roboto',
+                                  ),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 3,
                           softWrap: true,
@@ -158,6 +161,7 @@ class _DetailScreenState extends State<DetailScreen> {
               maxLines: 50,
               softWrap: true,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontFamily: 'Roboto',
                     color: Colors.grey[600],
                     fontWeight: FontWeight.normal,
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mopen_test/constants/connection_status_consts.dart';
 
 import 'favorites.screen.dart';
 import 'home.screen.dart';
@@ -13,7 +14,13 @@ class TabBarScreen extends StatefulWidget {
 }
 
 class TabBarScreenState extends State<TabBarScreen> {
+  String connectionStatus = ConnectionStatusConsts.unknownConnection;
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   final List<Widget> _tabs = [
     const HomeScreen(),

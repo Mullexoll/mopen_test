@@ -72,11 +72,13 @@ class MovieCardRightSideInfo extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.45,
                 child: Text(
-                  movie.originalTitle,
+                  movie.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   softWrap: true,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontFamily: 'Roboto',
+                      ),
                 ),
               ),
               Row(

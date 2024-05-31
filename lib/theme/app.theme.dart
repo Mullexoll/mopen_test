@@ -36,7 +36,6 @@ abstract class AppTheme {
         fontWeight: FontWeight.normal,
       ),
       labelSmall: TextStyle(
-        fontFamily: 'Poppins',
         fontSize: 13,
         color: Color(0xFF888888),
         fontWeight: FontWeight.normal,

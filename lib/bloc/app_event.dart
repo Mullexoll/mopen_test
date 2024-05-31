@@ -22,3 +22,9 @@ class FavoriteHandler extends AppEvent {
 
   FavoriteHandler({required this.movie});
 }
+
+class AddCurrentLocal extends AppEvent {
+  final String currentLocal;
+
+  AddCurrentLocal({required this.currentLocal});
+}

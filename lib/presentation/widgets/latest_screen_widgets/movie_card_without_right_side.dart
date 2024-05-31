@@ -1,30 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
-import 'package:mopen_test/presentation/widgets/home_screen_widgets/star_rating.dart';
 
 import '../../../bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
 
-class TopFiveCard extends StatefulWidget {
-  final Movie topMovie;
+class MovieCardWithoutRightSide extends StatelessWidget {
+  final Movie movie;
 
-  const TopFiveCard({
-    super.key,
-    required this.topMovie,
-  });
+  const MovieCardWithoutRightSide({super.key, required this.movie});
 
-  @override
-  State<TopFiveCard> createState() => _TopFiveCardState();
-}
-
-class _TopFiveCardState extends State<TopFiveCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
-      height: 266,
+      width: 182,
+      height: 360,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
       ),
@@ -38,9 +29,9 @@ class _TopFiveCardState extends State<TopFiveCard> {
                   Radius.circular(20),
                 ),
                 child: Image.network(
-                  'https://image.tmdb.org/t/p/w400/${widget.topMovie.backdropPath}',
-                  width: 300,
-                  height: 190,
+                  'https://image.tmdb.org/t/p/w400/${movie.posterPath}',
+                  width: 182,
+                  height: 273,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -50,11 +41,11 @@ class _TopFiveCardState extends State<TopFiveCard> {
                 child: InkWell(
                   onTap: () {
                     final _ = BlocProvider.of<AppBloc>(context).add(
-                      FavoriteHandler(movie: widget.topMovie),
+                      FavoriteHandler(movie: movie),
                     );
                   },
                   child: SvgPicture.asset(
-                    widget.topMovie.isFavorite
+                    movie.isFavorite
                         ? 'assets/icons/bookmark_active_icon.svg'
                         : 'assets/icons/bookmark_disable_icon.svg',
                   ),
@@ -63,11 +54,18 @@ class _TopFiveCardState extends State<TopFiveCard> {
             ],
           ),
           const Gap(5),
-          Text(
-            widget.topMovie.title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontFamily: 'Roboto',
-                ),
+          SizedBox(
+            width: 170,
+            child: Text(
+              movie.title,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+              softWrap: true,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontSize: 16,
+                    fontFamily: 'Roboto',
+                  ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -76,17 +74,17 @@ class _TopFiveCardState extends State<TopFiveCard> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 5.0),
                 child: Text(
-                  (widget.topMovie.voteAverage / 2).toStringAsFixed(1),
+                  (movie.voteAverage / 2).toStringAsFixed(1),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
                 ),
               ),
-              const Gap(10),
-              StarRating(
-                rating: double.parse(
-                  (widget.topMovie.voteAverage / 2).toStringAsFixed(1),
-                ),
+              const Gap(5),
+              SvgPicture.asset(
+                'assets/icons/full_star.svg',
+                width: 26,
+                height: 26,
               ),
             ],
           ),
