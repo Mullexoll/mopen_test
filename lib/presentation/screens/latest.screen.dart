@@ -18,7 +18,8 @@ class LatestScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const ScreensHeader(
+              ScreensHeader(
+                onWillPop: () => Future.value(true),
                 title: 'Latest',
               ),
               const Gap(15),

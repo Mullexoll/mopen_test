@@ -31,7 +31,8 @@ class TabBarScreenState extends State<TabBarScreen> {
     }
   }
 
-  Future<bool> _onWillPop() async {
+  Future<bool> onWillPop() async {
+    _selectTab(0);
     final isFirstRouteInCurrentTab =
         !await _navigatorKeys[_currentIndex].currentState!.maybePop();
     if (isFirstRouteInCurrentTab) {
@@ -49,7 +50,7 @@ class TabBarScreenState extends State<TabBarScreen> {
           return;
         }
         final navigator = Navigator.of(context);
-        bool value = await _onWillPop();
+        bool value = await onWillPop();
         if (value) {
           navigator.pop();
         }
@@ -59,8 +60,18 @@ class TabBarScreenState extends State<TabBarScreen> {
           index: _currentIndex,
           children: <Widget>[
             _buildOffstageNavigator(0, const HomeScreen()),
-            _buildOffstageNavigator(1, const SearchScreen()),
-            _buildOffstageNavigator(2, const FavoritesScreen()),
+            _buildOffstageNavigator(
+              1,
+              SearchScreen(
+                onWillPop: onWillPop,
+              ),
+            ),
+            _buildOffstageNavigator(
+              2,
+              FavoritesScreen(
+                onWillPop: onWillPop,
+              ),
+            ),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

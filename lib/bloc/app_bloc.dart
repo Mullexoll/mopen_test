@@ -66,7 +66,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               topMovies: moviesWithGenres,
               isSearching: false,
               connectionStatus: connectionStatus,
-              currentLocal: 'en',
             ),
           );
         }
@@ -80,13 +79,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
       emit(
         AppLoaded(
-            topMovies: List.from([]),
-            latestMovies: List.from([]),
-            searchedMovies: List.from([]),
-            isSearching: false,
-            favoritesMovies: favoriteRepositories,
-            connectionStatus: connectionStatus,
-            currentLocal: 'en'),
+          topMovies: List.from([]),
+          latestMovies: List.from([]),
+          searchedMovies: List.from([]),
+          isSearching: false,
+          favoritesMovies: favoriteRepositories,
+          connectionStatus: connectionStatus,
+        ),
       );
     }
   }
@@ -119,7 +118,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
             favoritesMovies: List.from([]),
             isSearching: false,
             connectionStatus: ConnectionStatusConsts.unknownConnection,
-            currentLocal: 'en',
           ),
         );
       }
@@ -380,7 +378,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         favoritesMovies: List.from([]),
         isSearching: false,
         connectionStatus: ConnectionStatusConsts.unknownConnection,
-        currentLocal: event.currentLocal,
       ));
     }
   }

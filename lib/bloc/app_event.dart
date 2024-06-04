@@ -28,3 +28,9 @@ class AddCurrentLocal extends AppEvent {
 
   AddCurrentLocal({required this.currentLocal});
 }
+
+class AddCurrentTabIndex extends AppEvent {
+  final int currentIndex;
+
+  AddCurrentTabIndex({required this.currentIndex});
+}

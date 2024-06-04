@@ -6,22 +6,28 @@ import 'package:mopen_test/presentation/widgets/search_screen_widgets/search_res
 import '../widgets/screens_header.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  final Future<bool> Function() onWillPop;
+
+  const SearchScreen({
+    super.key,
+    required this.onWillPop,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 35),
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 35),
       child: SingleChildScrollView(
         child: Column(
           children: [
             ScreensHeader(
               title: 'Search',
+              onWillPop: onWillPop,
             ),
-            Gap(15),
-            CustomSearchBar(),
-            Gap(15),
-            SearchResultSection(),
+            const Gap(15),
+            const CustomSearchBar(),
+            const Gap(15),
+            const SearchResultSection(),
           ],
         ),
       ),

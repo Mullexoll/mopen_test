@@ -8,7 +8,12 @@ import '../widgets/screens_header.dart';
 import 'detail.screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({super.key});
+  final Future<bool> Function() onWillPop;
+
+  const FavoritesScreen({
+    super.key,
+    required this.onWillPop,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +22,9 @@ class FavoritesScreen extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const ScreensHeader(
+            ScreensHeader(
               title: 'Bookmarks',
+              onWillPop: onWillPop,
             ),
             const Gap(15),
             if ((context.watch<AppBloc>().state as AppLoaded)

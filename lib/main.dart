@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:mopen_test/presentation/screens/tab_bar.screen.dart';
 import 'package:mopen_test/services/localization.dart';
 
