@@ -32,7 +32,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<ClearSearchedList>(_onClearSearchedList);
     on<InitLocalDB>(_onInitLocalDB);
     on<FavoriteHandler>(_onFavoriteHandler);
-    on<AddCurrentLocal>(_onAddCurrentLocal);
   }
 
   FutureOr<void> _onFetchTopMovies(
@@ -73,9 +72,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       }
     } else if (connectionStatus == ConnectionStatusConsts.noConnection) {
       await initIsarRepository();
-      final List<Movie> favoriteRepositories =
-          await RepositoryIsarInstanceUseCase(_isarRepository)
-              .getAllRepositories();
+      final List<Movie> favoriteRepositories = await getLocalRepository();
 
       emit(
         AppLoaded(
@@ -193,9 +190,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     await initIsarRepository();
     final List<Movie> topMovies = (state as AppLoaded).topMovies;
     final List<Movie> latestMovies = (state as AppLoaded).latestMovies;
-    final List<Movie> favoriteRepositories =
-        await RepositoryIsarInstanceUseCase(_isarRepository)
-            .getAllRepositories();
+    final List<Movie> favoriteRepositories = await getLocalRepository();
     final List<Movie> markedMovies = markFavorites(
       listMovie: topMovies,
       favoriteMovies: favoriteRepositories,
@@ -241,9 +236,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
 
     if (isDataWritten) {
-      final List<Movie> favoriteRepositories =
-          await RepositoryIsarInstanceUseCase(_isarRepository)
-              .getAllRepositories();
+      final List<Movie> favoriteRepositories = await getLocalRepository();
       final List<Movie> topMovies = (state as AppLoaded).topMovies;
       final List<Movie> searchedMovies = (state as AppLoaded).searchedMovies;
       final List<Movie> markedSearchedMovies = markFavorites(
@@ -271,9 +264,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     } else {
       final _ = await RepositoryIsarInstanceUseCase(_isarRepository)
           .deleteRepository(event.movie.id);
-      final List<Movie> favoriteRepositories =
-          await RepositoryIsarInstanceUseCase(_isarRepository)
-              .getAllRepositories();
+      final List<Movie> favoriteRepositories = await getLocalRepository();
       final List<Movie> searchedMovies = (state as AppLoaded).searchedMovies;
       final List<Movie> markedSearchedMovies = markFavorites(
         listMovie: searchedMovies,
@@ -366,19 +357,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
   }
 
-  FutureOr<void> _onAddCurrentLocal(
-    AddCurrentLocal event,
-    Emitter<AppState> emit,
-  ) {
-    if (state is AppLoading) {
-      emit(AppLoaded(
-        latestMovies: List.from([]),
-        topMovies: List.from([]),
-        searchedMovies: List.from([]),
-        favoritesMovies: List.from([]),
-        isSearching: false,
-        connectionStatus: ConnectionStatusConsts.unknownConnection,
-      ));
-    }
+  Future<List<Movie>> getLocalRepository() async {
+    return await RepositoryIsarInstanceUseCase(_isarRepository)
+        .getAllRepositories();
   }
 }

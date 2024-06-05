@@ -40,12 +40,8 @@ class MyApp extends StatelessWidget {
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               if (locale != null && locale.languageCode == 'uk') {
-                BlocProvider.of<AppBloc>(context)
-                    .add(AddCurrentLocal(currentLocal: 'uk'));
                 return const Locale('uk');
               }
-              BlocProvider.of<AppBloc>(context)
-                  .add(AddCurrentLocal(currentLocal: 'en'));
               return const Locale('en');
             },
             supportedLocales: AppLocalizations.supportedLocales,
