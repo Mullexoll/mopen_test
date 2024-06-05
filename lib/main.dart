@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mopen_test/presentation/screens/tab_bar.screen.dart';
 import 'package:mopen_test/services/localization.dart';
 
 import 'bloc/app_bloc.dart';
 import 'theme/app.theme.dart';
+
+GetIt getIt = GetIt.instance;
 
 void main() {
   runApp(const MyApp());
@@ -40,8 +43,10 @@ class MyApp extends StatelessWidget {
             ],
             localeResolutionCallback: (locale, supportedLocales) {
               if (locale != null && locale.languageCode == 'uk') {
+                final _ = getIt.registerSingleton<Locale>(const Locale('uk'));
                 return const Locale('uk');
               }
+              final _ = getIt.registerSingleton<Locale>(const Locale('en'));
               return const Locale('en');
             },
             supportedLocales: AppLocalizations.supportedLocales,

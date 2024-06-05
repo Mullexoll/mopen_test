@@ -105,8 +105,8 @@ class MovieCardRightSideInfo extends StatelessWidget {
               Wrap(
                 children: [
                   ...movie.genres.map(
-                    (e) => Text(
-                      '$e, ',
+                    (genre) => Text(
+                      genre != movie.genres.last ? '$genre, ' : genre,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       softWrap: true,

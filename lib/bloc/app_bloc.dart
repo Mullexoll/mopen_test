@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
-import 'package:meta/meta.dart';
 import 'package:mopen_test/constants/connection_status_consts.dart';
 import 'package:mopen_test/constants/genres_const.dart';
 import 'package:mopen_test/infrastructure/datasource/fetch_searched_movies.api.dart';
@@ -24,6 +25,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   late Isar _isarRepository;
   final APIService apiService = APIService();
   final Connectivity _connectivity = Connectivity();
+  final GetIt getIt = GetIt.instance;
 
   AppBloc() : super(AppLoading()) {
     on<FetchTopMovies>(_onFetchTopMovies);
@@ -47,7 +49,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       if (topMovies != null) {
         final List<Movie> moviesWithGenres = mapMoviesWithGenres(
           topMovies,
-          GenresConst().genres,
+          GetIt.I<Locale>().languageCode == 'uk'
+              ? GenresConst().genresUK
+              : GenresConst().genresEN,
         );
 
         if (state is AppLoaded) {
@@ -97,7 +101,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     if (latestMovies != null) {
       final List<Movie> moviesWithGenres = mapMoviesWithGenres(
         latestMovies,
-        GenresConst().genres,
+        GetIt.I<Locale>().languageCode == 'uk'
+            ? GenresConst().genresUK
+            : GenresConst().genresEN,
       );
 
       if (state is AppLoaded) {
@@ -164,7 +170,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     if (searchedMovies != null) {
       final List<Movie> moviesWithGenres = mapMoviesWithGenres(
         searchedMovies,
-        GenresConst().genres,
+        GetIt.I<Locale>().languageCode == 'uk'
+            ? GenresConst().genresUK
+            : GenresConst().genresEN,
       );
       final List<Movie> markedMovies = markFavorites(
         listMovie: moviesWithGenres,

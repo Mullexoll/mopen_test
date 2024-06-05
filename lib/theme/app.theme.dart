@@ -4,7 +4,7 @@ abstract class AppTheme {
   static ThemeData dark = ThemeData(
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontSize: 30,
         color: Colors.white,
         fontWeight: FontWeight.bold,
@@ -18,19 +18,19 @@ abstract class AppTheme {
         color: Colors.grey,
       ),
       titleMedium: TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontSize: 18,
         color: Colors.white,
         fontWeight: FontWeight.bold,
       ),
       titleLarge: TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontSize: 14,
         color: Colors.black87,
         fontWeight: FontWeight.w800,
       ),
       titleSmall: TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontSize: 14,
         color: Colors.white,
         fontWeight: FontWeight.normal,
@@ -41,7 +41,7 @@ abstract class AppTheme {
         fontWeight: FontWeight.normal,
       ),
       labelLarge: TextStyle(
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         fontSize: 16,
         color: Color(0xFF888888),
         fontWeight: FontWeight.normal,

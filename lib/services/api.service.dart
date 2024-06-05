@@ -1,12 +1,14 @@
 import 'dart:convert';
-import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/url_consts.dart';
 
 class APIService {
   final httpClient = http.Client();
+  final GetIt getIt = GetIt.instance;
 
   get(
     String url,
@@ -14,7 +16,7 @@ class APIService {
   ) async {
     try {
       final utf8Decoder = utf8.decoder;
-      var locale = ui.window.locale.languageCode;
+      final String locale = GetIt.I<Locale>().languageCode;
 
       if (query == null) {
         final response = await http.get(
