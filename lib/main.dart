@@ -32,29 +32,40 @@ class MyApp extends StatelessWidget {
             ),
         ),
       ],
-      child: BlocBuilder<AppBloc, AppState>(
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'TMDB',
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            localeResolutionCallback: (locale, supportedLocales) {
-              if (locale != null && locale.languageCode == 'uk') {
-                final _ = getIt.registerSingleton<Locale>(const Locale('uk'));
-                return const Locale('uk');
-              }
-              final _ = getIt.registerSingleton<Locale>(const Locale('en'));
-              return const Locale('en');
-            },
-            supportedLocales: AppLocalizationsInit.supportedLocales,
-            theme: AppTheme.dark,
-            home: const TabBarScreen(),
-          );
+      child: MaterialApp(
+        title: 'TMDB',
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          if (locale != null && locale.languageCode == 'uk') {
+            final _ = getIt.registerSingleton<Locale>(const Locale('uk'));
+            return const Locale('uk');
+          }
+          final _ = getIt.registerSingleton<Locale>(const Locale('en'));
+          return const Locale('en');
         },
+        supportedLocales: AppLocalizationsInit.supportedLocales,
+        theme: AppTheme.dark,
+        home: WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, state) {
+              if (state is AppLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return const TabBarScreen();
+            },
+          ),
+        ),
       ),
     );
   }

@@ -28,39 +28,35 @@ class FavoritesScreen extends StatelessWidget {
               onWillPop: onWillPop,
             ),
             const Gap(15),
-            if ((context.watch<AppBloc>().state as AppLoaded)
-                .favoritesMovies
-                .isNotEmpty)
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: (context.watch<AppBloc>().state as AppLoaded)
-                    .favoritesMovies
-                    .length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 18.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => DetailScreen(
-                              movie:
-                                  (context.watch<AppBloc>().state as AppLoaded)
-                                      .favoritesMovies[index],
-                            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: (context.watch<AppBloc>().state as AppLoaded)
+                  .favoritesMovies
+                  .length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 18.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => DetailScreen(
+                            movie: (context.watch<AppBloc>().state as AppLoaded)
+                                .favoritesMovies[index],
                           ),
-                        );
-                      },
-                      child: MovieCardRightSideInfo(
-                        movie: (context.watch<AppBloc>().state as AppLoaded)
-                            .favoritesMovies[index],
-                      ),
+                        ),
+                      );
+                    },
+                    child: MovieCardRightSideInfo(
+                      movie: (context.watch<AppBloc>().state as AppLoaded)
+                          .favoritesMovies[index],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
