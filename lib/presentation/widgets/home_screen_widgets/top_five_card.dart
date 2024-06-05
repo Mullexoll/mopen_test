@@ -65,9 +65,7 @@ class _TopFiveCardState extends State<TopFiveCard> {
           const Gap(5),
           Text(
             widget.topMovie.title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontFamily: 'Roboto',
-                ),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,

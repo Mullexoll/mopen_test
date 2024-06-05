@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 
 import '../../../bloc/app_bloc.dart';
@@ -18,7 +19,7 @@ class SearchResultSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Search result (${state.searchedMovies.length})',
+                '${AppLocalizations.of(context)!.searchResult} (${state.searchedMovies.length})',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               state.isSearching

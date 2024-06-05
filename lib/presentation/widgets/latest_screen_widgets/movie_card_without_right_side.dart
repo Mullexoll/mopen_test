@@ -63,7 +63,6 @@ class MovieCardWithoutRightSide extends StatelessWidget {
               softWrap: true,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     fontSize: 16,
-                    fontFamily: 'Roboto',
                   ),
             ),
           ),

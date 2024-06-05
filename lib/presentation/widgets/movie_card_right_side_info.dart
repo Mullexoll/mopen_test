@@ -76,9 +76,7 @@ class MovieCardRightSideInfo extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   softWrap: true,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontFamily: 'Roboto',
-                      ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
               Row(

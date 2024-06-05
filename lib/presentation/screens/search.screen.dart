@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:mopen_test/presentation/widgets/search_screen_widgets/search_bar.dart';
 import 'package:mopen_test/presentation/widgets/search_screen_widgets/search_result_section.dart';
@@ -21,7 +22,7 @@ class SearchScreen extends StatelessWidget {
         child: Column(
           children: [
             ScreensHeader(
-              title: 'Search',
+              title: AppLocalizations.of(context)!.search,
               onWillPop: onWillPop,
             ),
             const Gap(15),

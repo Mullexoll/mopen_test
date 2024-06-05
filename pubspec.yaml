@@ -37,14 +37,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
   - assets/fonts/
   - assets/icons/
-  - lib/l10n/intl_en.json
-  - lib/l10n/intl_uk.json
+  - lib/l10n/app_en.arb
+  - lib/l10n/app_uk.arb
   fonts:
-    - family: Poppins
+    - family: Mariupol
       fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Bold.ttf
-        - asset: assets/fonts/Poppins-Italic.ttf
+        - asset: assets/fonts/Mariupol-Regular.otf
+        - asset: assets/fonts/Mariupol-Bold.otf
+        - asset: assets/fonts/Mariupol-Medium.otf

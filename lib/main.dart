@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mopen_test/presentation/screens/tab_bar.screen.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
               final _ = getIt.registerSingleton<Locale>(const Locale('en'));
               return const Locale('en');
             },
-            supportedLocales: AppLocalizations.supportedLocales,
+            supportedLocales: AppLocalizationsInit.supportedLocales,
             theme: AppTheme.dark,
             home: const TabBarScreen(),
           );

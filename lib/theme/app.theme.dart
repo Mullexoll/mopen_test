@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 abstract class AppTheme {
+  static const String fontFamily = 'Mariupol';
+
   static ThemeData dark = ThemeData(
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         fontSize: 30,
         color: Colors.white,
         fontWeight: FontWeight.bold,
@@ -18,19 +20,19 @@ abstract class AppTheme {
         color: Colors.grey,
       ),
       titleMedium: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         fontSize: 18,
         color: Colors.white,
         fontWeight: FontWeight.bold,
       ),
       titleLarge: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         fontSize: 14,
         color: Colors.black87,
         fontWeight: FontWeight.w800,
       ),
       titleSmall: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         fontSize: 14,
         color: Colors.white,
         fontWeight: FontWeight.normal,
@@ -41,7 +43,7 @@ abstract class AppTheme {
         fontWeight: FontWeight.normal,
       ),
       labelLarge: TextStyle(
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         fontSize: 16,
         color: Color(0xFF888888),
         fontWeight: FontWeight.normal,

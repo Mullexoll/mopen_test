@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 import 'package:mopen_test/presentation/widgets/latest_screen_widgets/movie_card_without_right_side.dart';
 
@@ -20,7 +21,7 @@ class LatestScreen extends StatelessWidget {
             children: [
               ScreensHeader(
                 onWillPop: () => Future.value(true),
-                title: 'Latest',
+                title: AppLocalizations.of(context)!.latest,
               ),
               const Gap(15),
               if ((context.watch<AppBloc>().state as AppLoaded)
