@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:mopen_test/domain/models/movie.model.dart';
+
+import '../../domain/models/movie.model.dart';
 
 class RepositoryIsarInstanceUseCase {
   final IsarCollection<Movie> _storage;

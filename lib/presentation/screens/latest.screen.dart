@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:mopen_test/presentation/widgets/latest_screen_widgets/movie_card_without_right_side.dart';
 
 import '../../bloc/app_bloc.dart';
+import '../widgets/latest_screen_widgets/movie_card_without_right_side.dart';
 import '../widgets/screens_header.dart';
 import 'detail.screen.dart';
 

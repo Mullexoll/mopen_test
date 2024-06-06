@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mopen_test/presentation/screens/detail.screen.dart';
-import 'package:mopen_test/presentation/screens/latest.screen.dart';
-import 'package:mopen_test/presentation/widgets/movie_card_right_side_info.dart';
 
 import '../../../bloc/app_bloc.dart';
+import '../../screens/detail.screen.dart';
+import '../../screens/latest.screen.dart';
+import '../movie_card_right_side_info.dart';
 
 class LatestSection extends StatelessWidget {
   const LatestSection({super.key});

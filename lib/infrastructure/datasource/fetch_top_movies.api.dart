@@ -1,7 +1,6 @@
-import 'package:mopen_test/constants/url_consts.dart';
-import 'package:mopen_test/services/api.service.dart';
-
+import '../../constants/url_consts.dart';
 import '../../domain/models/movie.model.dart';
+import '../../services/api.service.dart';
 
 class FetchTopMoviesAPI {
   final APIService apiService;
