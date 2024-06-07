@@ -9,7 +9,7 @@ class FetchTopMoviesAPI {
 
   Future<List<Movie>?> fetch() async {
     try {
-      final data = await apiService.get(Constants.topRated, null);
+      final data = await apiService.get(Constants.topRated, null, '1');
 
       final trendingMovies = data['results'];
       final topFiveMovies = trendingMovies.take(5).toList();

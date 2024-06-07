@@ -96,7 +96,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     Emitter<AppState> emit,
   ) async {
     final List<Movie>? latestMovies =
-        await FetchLatestMoviesAPI(apiService: apiService).fetch();
+        await FetchLatestMoviesAPI(apiService: apiService).fetch(page: '1');
 
     if (latestMovies != null) {
       final List<Movie> moviesWithGenres = mapMoviesWithGenres(
