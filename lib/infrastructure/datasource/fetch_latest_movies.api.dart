@@ -7,9 +7,9 @@ class FetchLatestMoviesAPI {
 
   FetchLatestMoviesAPI({required this.apiService});
 
-  Future<List<Movie>?> fetch() async {
+  Future<List<Movie>?> fetch({required String page}) async {
     try {
-      final data = await apiService.get(Constants.latestMovie, null);
+      final data = await apiService.get(Constants.latestMovie, null, page);
       final List latestMovies = data['results'];
 
       final List<Movie> movieList =

@@ -75,6 +75,7 @@ class TabBarScreenState extends State<TabBarScreen> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedFontSize: 0,
           onTap: _selectTab,
           currentIndex: _currentIndex,
           items: [

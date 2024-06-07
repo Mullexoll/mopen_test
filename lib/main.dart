@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mopen_test/presentation/screens/tab_bar.screen.dart';
-import 'package:mopen_test/services/localization.dart';
+import 'package:tmdb_project/presentation/screens/splash_screen.dart';
+import 'package:tmdb_project/services/localization.dart';
 
 import 'bloc/app_bloc.dart';
 import 'theme/app.theme.dart';
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
                 );
               }
 
-              return const TabBarScreen();
+              return const SplashImageScreen();
             },
           ),
         ),

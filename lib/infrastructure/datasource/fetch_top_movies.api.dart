@@ -1,7 +1,6 @@
-import 'package:mopen_test/constants/url_consts.dart';
-import 'package:mopen_test/services/api.service.dart';
-
+import '../../constants/url_consts.dart';
 import '../../domain/models/movie.model.dart';
+import '../../services/api.service.dart';
 
 class FetchTopMoviesAPI {
   final APIService apiService;
@@ -10,7 +9,7 @@ class FetchTopMoviesAPI {
 
   Future<List<Movie>?> fetch() async {
     try {
-      final data = await apiService.get(Constants.topRated, null);
+      final data = await apiService.get(Constants.topRated, null, '1');
 
       final trendingMovies = data['results'];
       final topFiveMovies = trendingMovies.take(5).toList();

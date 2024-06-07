@@ -13,6 +13,7 @@ class APIService {
   get(
     String url,
     String? query,
+    String? page,
   ) async {
     try {
       final utf8Decoder = utf8.decoder;
@@ -20,7 +21,8 @@ class APIService {
 
       if (query == null) {
         final response = await http.get(
-          Uri.parse('$url?api_key=${Constants.apiKey}&language=$locale'),
+          Uri.parse(
+              '$url?api_key=${Constants.apiKey}&language=$locale&page=$page'),
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
-import 'package:mopen_test/presentation/widgets/home_screen_widgets/star_rating.dart';
 
 import '../../../bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
+import 'star_rating.dart';
 
 class TopFiveCard extends StatefulWidget {
   final Movie topMovie;

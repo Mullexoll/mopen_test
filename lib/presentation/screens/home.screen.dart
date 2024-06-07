@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:mopen_test/presentation/widgets/home_screen_widgets/latest_section.dart';
-import 'package:mopen_test/presentation/widgets/home_screen_widgets/top_five_section.dart';
+
+import '../widgets/home_screen_widgets/latest_section.dart';
+import '../widgets/home_screen_widgets/top_five_section.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

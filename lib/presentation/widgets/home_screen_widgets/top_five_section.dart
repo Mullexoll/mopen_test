@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
-import 'package:mopen_test/presentation/widgets/home_screen_widgets/top_five_card.dart';
 
 import '../../../bloc/app_bloc.dart';
 import '../../screens/detail.screen.dart';
+import 'top_five_card.dart';
 
 class TopFiveSection extends StatelessWidget {
   const TopFiveSection({super.key});
