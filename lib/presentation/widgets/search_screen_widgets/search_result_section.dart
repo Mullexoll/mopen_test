@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 
-import '../../../bloc/app_bloc.dart';
+import '../../../blocs/app_bloc/app_bloc.dart';
 import '../../screens/detail.screen.dart';
 import '../movie_card_right_side_info.dart';
 

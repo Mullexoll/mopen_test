@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 
-import '../../../bloc/app_bloc.dart';
+import '../../../blocs/app_bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
 import 'star_rating.dart';
 

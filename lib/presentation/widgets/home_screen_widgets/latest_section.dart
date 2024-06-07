@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:tmdb_project/blocs/latest_movies_bloc/latest_movies_bloc.dart';
 
-import '../../../bloc/app_bloc.dart';
 import '../../screens/detail.screen.dart';
 import '../../screens/latest.screen.dart';
 import '../movie_card_right_side_info.dart';
@@ -50,39 +50,33 @@ class LatestSection extends StatelessWidget {
             ),
           ],
         ),
-        BlocBuilder<AppBloc, AppState>(
+        BlocBuilder<LatestMoviesBloc, LatestMoviesState>(
           builder: (context, state) {
-            if (state is AppLoading) {
-              return const CircularProgressIndicator();
-            } else if (state is AppLoaded) {
-              return ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: state.latestMovies.take(6).length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 18.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) => DetailScreen(
-                              movie: state.latestMovies[index],
-                            ),
+            return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: state.latestMovies.take(6).length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 18.0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => DetailScreen(
+                            movie: state.latestMovies[index],
                           ),
-                        );
-                      },
-                      child: MovieCardRightSideInfo(
-                        movie: state.latestMovies[index],
-                      ),
+                        ),
+                      );
+                    },
+                    child: MovieCardRightSideInfo(
+                      movie: state.latestMovies[index],
                     ),
-                  );
-                },
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
+                  ),
+                );
+              },
+            );
           },
         ),
       ],

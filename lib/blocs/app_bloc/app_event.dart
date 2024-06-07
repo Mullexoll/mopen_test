@@ -5,8 +5,6 @@ sealed class AppEvent {}
 
 class FetchTopMovies extends AppEvent {}
 
-class FetchLatestMovies extends AppEvent {}
-
 class FetchSearchedMovies extends AppEvent {
   final String query;
 

@@ -8,15 +8,14 @@ import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../constants/connection_status_consts.dart';
-import '../constants/genres_const.dart';
-import '../domain/models/genre.model.dart';
-import '../domain/models/movie.model.dart';
-import '../infrastructure/datasource/fetch_latest_movies.api.dart';
-import '../infrastructure/datasource/fetch_searched_movies.api.dart';
-import '../infrastructure/datasource/fetch_top_movies.api.dart';
-import '../infrastructure/repositories/isar_favorite_repository.dart';
-import '../services/api.service.dart';
+import '../../constants/connection_status_consts.dart';
+import '../../constants/genres_const.dart';
+import '../../domain/models/genre.model.dart';
+import '../../domain/models/movie.model.dart';
+import '../../infrastructure/datasource/fetch_searched_movies.api.dart';
+import '../../infrastructure/datasource/fetch_top_movies.api.dart';
+import '../../infrastructure/repositories/isar_favorite_repository.dart';
+import '../../services/api.service.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
@@ -29,7 +28,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   AppBloc() : super(AppLoading()) {
     on<FetchTopMovies>(_onFetchTopMovies);
-    on<FetchLatestMovies>(_onFetchLatestMovies);
     on<FetchSearchedMovies>(_onFetchSearchedMovies);
     on<ClearSearchedList>(_onClearSearchedList);
     on<InitLocalDB>(_onInitLocalDB);
@@ -88,42 +86,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           connectionStatus: connectionStatus,
         ),
       );
-    }
-  }
-
-  Future<FutureOr<void>> _onFetchLatestMovies(
-    FetchLatestMovies event,
-    Emitter<AppState> emit,
-  ) async {
-    final List<Movie>? latestMovies =
-        await FetchLatestMoviesAPI(apiService: apiService).fetch(page: '1');
-
-    if (latestMovies != null) {
-      final List<Movie> moviesWithGenres = mapMoviesWithGenres(
-        latestMovies,
-        GetIt.I<Locale>().languageCode == 'uk'
-            ? GenresConst().genresUK
-            : GenresConst().genresEN,
-      );
-
-      if (state is AppLoaded) {
-        emit(
-          (state as AppLoaded).copyWith(
-            latestMovies: moviesWithGenres,
-          ),
-        );
-      } else {
-        emit(
-          AppLoaded(
-            latestMovies: moviesWithGenres,
-            topMovies: List.from([]),
-            searchedMovies: List.from([]),
-            favoritesMovies: List.from([]),
-            isSearching: false,
-            connectionStatus: ConnectionStatusConsts.unknownConnection,
-          ),
-        );
-      }
     }
   }
 
