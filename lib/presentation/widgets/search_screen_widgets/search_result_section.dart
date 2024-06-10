@@ -19,7 +19,7 @@ class SearchResultSection extends StatelessWidget {
     return SliverGrid(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        childAspectRatio: 1.35,
+        childAspectRatio: 1.30,
       ),
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
