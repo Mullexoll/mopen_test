@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../blocs/app_bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
+import '../home_screen_widgets/rating.dart';
 
 class MovieCardWithoutRightSide extends StatelessWidget {
   final Movie movie;
@@ -66,27 +67,11 @@ class MovieCardWithoutRightSide extends StatelessWidget {
                   ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: Text(
-                  (movie.voteAverage / 2).toStringAsFixed(1),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                ),
-              ),
-              const Gap(5),
-              SvgPicture.asset(
-                'assets/icons/full_star.svg',
-                width: 26,
-                height: 26,
-              ),
-            ],
+          const Gap(10),
+          MovieRating(
+            rating: movie.voteAverage,
           ),
+          const Gap(10),
         ],
       ),
     );

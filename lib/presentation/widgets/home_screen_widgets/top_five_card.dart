@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../../blocs/app_bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
-import 'star_rating.dart';
+import 'rating.dart';
 
 class TopFiveCard extends StatefulWidget {
   final Movie topMovie;
@@ -67,26 +67,8 @@ class _TopFiveCardState extends State<TopFiveCard> {
             widget.topMovie.title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
-                child: Text(
-                  (widget.topMovie.voteAverage / 2).toStringAsFixed(1),
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
-                ),
-              ),
-              const Gap(10),
-              StarRating(
-                rating: double.parse(
-                  (widget.topMovie.voteAverage / 2).toStringAsFixed(1),
-                ),
-              ),
-            ],
+          MovieRating(
+            rating: widget.topMovie.voteAverage,
           ),
         ],
       ),

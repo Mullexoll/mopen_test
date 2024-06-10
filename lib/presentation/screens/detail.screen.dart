@@ -5,7 +5,7 @@ import 'package:gap/gap.dart';
 
 import '../../blocs/app_bloc/app_bloc.dart';
 import '../../domain/models/movie.model.dart';
-import '../widgets/home_screen_widgets/star_rating.dart';
+import '../widgets/home_screen_widgets/rating.dart';
 
 class DetailScreen extends StatefulWidget {
   final Movie movie;
@@ -73,30 +73,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           softWrap: true,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
-                            child: Text(
-                              (widget.movie.voteAverage / 2).toStringAsFixed(1),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                            ),
-                          ),
-                          const Gap(10),
-                          StarRating(
-                            rating: double.parse(
-                              (widget.movie.voteAverage / 2).toStringAsFixed(1),
-                            ),
-                          ),
-                        ],
+                      const Gap(10),
+                      MovieRating(
+                        rating: widget.movie.voteAverage,
                       ),
+                      const Gap(10),
                       Wrap(
                         children: [
                           ...widget.movie.genres.map(
