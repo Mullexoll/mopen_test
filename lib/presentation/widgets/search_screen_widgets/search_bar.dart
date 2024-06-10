@@ -2,47 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../bloc/app_bloc.dart';
+import '../../../blocs/search_movies_bloc/search_movies_bloc.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  const CustomSearchBar({super.key});
+  final TextEditingController textController;
+
+  const CustomSearchBar({
+    super.key,
+    required this.textController,
+  });
 
   @override
   CustomSearchBarState createState() => CustomSearchBarState();
 }
 
 class CustomSearchBarState extends State<CustomSearchBar> {
-  final TextEditingController _textController = TextEditingController();
-
   CustomSearchBarState();
 
   _onSearchBarSubmitted(String value) {
-    final _ = BlocProvider.of<AppBloc>(context).add(
-      FetchSearchedMovies(query: value),
+    final _ = BlocProvider.of<SearchMoviesBloc>(context).add(
+      FetchSearchedMovies(query: value, page: 1),
     );
 
     setState(() {
-      _textController.text = value;
+      widget.textController.text = value;
     });
   }
 
   _onSearchBarChanged(String value) {
     setState(() {
-      _textController.text = value;
+      widget.textController.text = value;
     });
   }
 
   clearSearchBar() {
-    final _ = BlocProvider.of<AppBloc>(context).add(
+    final _ = BlocProvider.of<SearchMoviesBloc>(context).add(
       ClearSearchedList(),
     );
-    _textController.clear();
+    widget.textController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     return SearchBar(
-      controller: _textController,
+      controller: widget.textController,
       backgroundColor: WidgetStateProperty.all(
         const Color(0xFF2B2B2B),
       ),
@@ -50,7 +53,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
         const Color(0xFF2B2B2B),
       ),
       side: WidgetStateProperty.all(
-        _textController.text != ''
+        widget.textController.text != ''
             ? const BorderSide(
                 color: Colors.yellowAccent,
               )
@@ -82,7 +85,7 @@ class CustomSearchBarState extends State<CustomSearchBar> {
         ),
       ),
       trailing: [
-        if (_textController.text != '')
+        if (widget.textController.text != '')
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: InkWell(

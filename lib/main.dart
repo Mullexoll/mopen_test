@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
+import 'package:tmdb_project/blocs/latest_movies_bloc/latest_movies_bloc.dart';
+import 'package:tmdb_project/blocs/search_movies_bloc/search_movies_bloc.dart';
 import 'package:tmdb_project/presentation/screens/splash_screen.dart';
 import 'package:tmdb_project/services/localization.dart';
 
-import 'bloc/app_bloc.dart';
+import 'blocs/app_bloc/app_bloc.dart';
 import 'theme/app.theme.dart';
 
 GetIt getIt = GetIt.instance;
@@ -26,10 +28,16 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => AppBloc()
             ..add(
               FetchTopMovies(),
-            )
-            ..add(
-              FetchLatestMovies(),
             ),
+        ),
+        BlocProvider<LatestMoviesBloc>(
+          create: (BuildContext context) => LatestMoviesBloc()
+            ..add(
+              FetchLatestMovies(page: 1),
+            ),
+        ),
+        BlocProvider<SearchMoviesBloc>(
+          create: (BuildContext context) => SearchMoviesBloc(),
         ),
       ],
       child: MaterialApp(

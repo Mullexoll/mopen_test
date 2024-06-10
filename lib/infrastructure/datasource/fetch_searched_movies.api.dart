@@ -7,10 +7,10 @@ class FetchSearchedMoviesAPI {
 
   FetchSearchedMoviesAPI({required this.apiService});
 
-  Future<List<Movie>?> fetch(String query) async {
+  Future<List<Movie>?> fetch(String query, String page) async {
     try {
       final data = await apiService.get(
-          Constants.searchFromQuery, query.toLowerCase(), '1');
+          Constants.searchFromQuery, query.toLowerCase(), page);
       final List searchedMovies = data['results'];
 
       final List<Movie> movieList =

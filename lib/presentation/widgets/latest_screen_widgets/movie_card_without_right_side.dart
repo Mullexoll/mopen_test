@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../../../bloc/app_bloc.dart';
+import '../../../blocs/app_bloc/app_bloc.dart';
 import '../../../domain/models/movie.model.dart';
 
 class MovieCardWithoutRightSide extends StatelessWidget {
@@ -31,7 +31,7 @@ class MovieCardWithoutRightSide extends StatelessWidget {
                 child: Image.network(
                   'https://image.tmdb.org/t/p/w400/${movie.posterPath}',
                   width: 182,
-                  height: 273,
+                  height: 249,
                   fit: BoxFit.cover,
                 ),
               ),
