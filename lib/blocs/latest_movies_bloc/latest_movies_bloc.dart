@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:meta/meta.dart';
 
 import '../../constants/genres_const.dart';
 import '../../domain/models/movie.model.dart';
@@ -34,25 +33,27 @@ class LatestMoviesBloc extends Bloc<LatestMoviesEvent, LatestMoviesState> {
     FetchLatestMovies event,
     Emitter<LatestMoviesState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-    final List<Movie>? fetchedLatestMovies =
-        await FetchLatestMoviesAPI(apiService: apiService).fetch(
-      page: event.page.toString(),
-    );
-    emit(state.copyWith(isLoading: false));
+    if (!state.isLoading) {
+      emit(state.copyWith(isLoading: true));
+      final List<Movie>? fetchedLatestMovies =
+          await FetchLatestMoviesAPI(apiService: apiService).fetch(
+        page: event.page.toString(),
+      );
+      emit(state.copyWith(isLoading: false));
 
-    final List<Movie> latestMoviesWithGenres = mapMoviesWithGenres(
-      fetchedLatestMovies ?? [],
-      GetIt.I<Locale>().languageCode == 'uk'
-          ? GenresConst().genresUK
-          : GenresConst().genresEN,
-    );
-    List<Movie> latestMovies = List.from(state.latestMovies)
-      ..addAll(latestMoviesWithGenres);
+      final List<Movie> latestMoviesWithGenres = mapMoviesWithGenres(
+        fetchedLatestMovies ?? [],
+        GetIt.I<Locale>().languageCode == 'uk'
+            ? GenresConst().genresUK
+            : GenresConst().genresEN,
+      );
+      List<Movie> latestMovies = List.from(state.latestMovies)
+        ..addAll(latestMoviesWithGenres);
 
-    emit(state.copyWith(
-      latestMovies: latestMovies,
-      currentPage: event.page + 1,
-    ));
+      emit(state.copyWith(
+        latestMovies: latestMovies,
+        currentPage: event.page + 1,
+      ));
+    }
   }
 }

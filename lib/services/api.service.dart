@@ -34,7 +34,7 @@ class APIService {
       } else {
         final response = await http.get(
           Uri.parse(
-              '$url?query=$query&api_key=${Constants.apiKey}&language=$locale'),
+              '$url?query=$query&api_key=${Constants.apiKey}&language=$locale&page=$page'),
           headers: {
             "Content-Type": "application/json;charset=utf-8",
           },

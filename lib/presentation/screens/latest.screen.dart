@@ -56,7 +56,8 @@ class LatestScreen extends StatelessWidget {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 0.55,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 0.49,
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
@@ -69,7 +70,7 @@ class LatestScreen extends StatelessWidget {
                         }
 
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 18.0),
+                          padding: const EdgeInsets.only(bottom: 14),
                           child: InkWell(
                             onTap: () {
                               Navigator.push(

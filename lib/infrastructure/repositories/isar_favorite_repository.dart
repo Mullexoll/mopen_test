@@ -2,12 +2,11 @@ import 'package:isar/isar.dart';
 
 import '../../domain/models/movie.model.dart';
 
-class RepositoryIsarInstanceUseCase {
+class FavoriteMoviesRepository {
   final IsarCollection<Movie> _storage;
   final Isar _isar;
 
-  RepositoryIsarInstanceUseCase(this._isar)
-      : _storage = _isar.collection<Movie>();
+  FavoriteMoviesRepository(this._isar) : _storage = _isar.collection<Movie>();
 
   Future<bool> addRepositoryToIsar({
     required Movie repository,

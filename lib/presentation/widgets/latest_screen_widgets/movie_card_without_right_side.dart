@@ -31,7 +31,7 @@ class MovieCardWithoutRightSide extends StatelessWidget {
                 child: Image.network(
                   'https://image.tmdb.org/t/p/w400/${movie.posterPath}',
                   width: 182,
-                  height: 273,
+                  height: 249,
                   fit: BoxFit.cover,
                 ),
               ),

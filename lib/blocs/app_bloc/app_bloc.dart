@@ -12,24 +12,23 @@ import '../../constants/connection_status_consts.dart';
 import '../../constants/genres_const.dart';
 import '../../domain/models/genre.model.dart';
 import '../../domain/models/movie.model.dart';
-import '../../infrastructure/datasource/fetch_searched_movies.api.dart';
 import '../../infrastructure/datasource/fetch_top_movies.api.dart';
 import '../../infrastructure/repositories/isar_favorite_repository.dart';
 import '../../services/api.service.dart';
+import '../bloc_helpers.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  late Isar _isarRepository;
+  late Isar isar;
   final APIService apiService = APIService();
   final Connectivity _connectivity = Connectivity();
   final GetIt getIt = GetIt.instance;
+  late FavoriteMoviesRepository favoriteMoviesRepository;
 
   AppBloc() : super(AppLoading()) {
     on<FetchTopMovies>(_onFetchTopMovies);
-    on<FetchSearchedMovies>(_onFetchSearchedMovies);
-    on<ClearSearchedList>(_onClearSearchedList);
     on<InitLocalDB>(_onInitLocalDB);
     on<FavoriteHandler>(_onFavoriteHandler);
   }
@@ -65,7 +64,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
               searchedMovies: List.from([]),
               favoritesMovies: List.from([]),
               topMovies: moviesWithGenres,
-              isSearching: false,
               connectionStatus: connectionStatus,
             ),
           );
@@ -81,7 +79,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           topMovies: List.from([]),
           latestMovies: List.from([]),
           searchedMovies: List.from([]),
-          isSearching: false,
           favoritesMovies: favoriteRepositories,
           connectionStatus: connectionStatus,
         ),
@@ -120,39 +117,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }).toList();
   }
 
-  FutureOr<void> _onFetchSearchedMovies(
-    FetchSearchedMovies event,
-    Emitter<AppState> emit,
-  ) async {
-    emit((state as AppLoaded).copyWith(isSearching: true));
-    final List<Movie>? searchedMovies =
-        await FetchSearchedMoviesAPI(apiService: apiService).fetch(event.query);
-    emit((state as AppLoaded).copyWith(isSearching: false));
-
-    if (searchedMovies != null) {
-      final List<Movie> moviesWithGenres = mapMoviesWithGenres(
-        searchedMovies,
-        GetIt.I<Locale>().languageCode == 'uk'
-            ? GenresConst().genresUK
-            : GenresConst().genresEN,
-      );
-      final List<Movie> markedMovies = markFavorites(
-        listMovie: moviesWithGenres,
-        favoriteMovies: (state as AppLoaded).favoritesMovies,
-      );
-      emit((state as AppLoaded).copyWith(searchedMovies: markedMovies));
-    } else {
-      emit((state as AppLoaded).copyWith(searchedMovies: []));
-    }
-  }
-
-  FutureOr<void> _onClearSearchedList(
-    ClearSearchedList event,
-    Emitter<AppState> emit,
-  ) {
-    emit((state as AppLoaded).copyWith(searchedMovies: []));
-  }
-
   Future<FutureOr<void>> _onInitLocalDB(
     InitLocalDB event,
     Emitter<AppState> emit,
@@ -183,8 +147,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     FavoriteHandler event,
     Emitter<AppState> emit,
   ) async {
-    bool isDataWritten =
-        await RepositoryIsarInstanceUseCase(_isarRepository).addItemToFavorite(
+    bool isDataWritten = await favoriteMoviesRepository.addItemToFavorite(
       repositoryFavorite: Movie(
         true,
         id: event.movie.id,
@@ -232,8 +195,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ),
       );
     } else {
-      final _ = await RepositoryIsarInstanceUseCase(_isarRepository)
-          .deleteRepository(event.movie.id);
+      final _ = await favoriteMoviesRepository.deleteRepository(event.movie.id);
       final List<Movie> favoriteRepositories = await getLocalRepository();
       final List<Movie> searchedMovies = (state as AppLoaded).searchedMovies;
       final List<Movie> markedSearchedMovies = markFavorites(
@@ -260,36 +222,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ),
       );
     }
-  }
-
-  List<Movie> markFavorites({
-    required List<Movie> listMovie,
-    required List<Movie> favoriteMovies,
-  }) {
-    final favoriteTitles = favoriteMovies.map((movie) => movie.id).toSet();
-
-    return listMovie.map((movie) {
-      final isFavorite = favoriteTitles.contains(movie.id);
-
-      return Movie(
-        isFavorite,
-        id: movie.id,
-        adult: movie.adult,
-        backdropPath: movie.backdropPath,
-        genreIds: movie.genreIds,
-        originalLanguage: movie.originalLanguage,
-        originalTitle: movie.originalTitle,
-        overview: movie.overview,
-        popularity: movie.popularity,
-        posterPath: movie.posterPath,
-        releaseDate: movie.releaseDate,
-        title: movie.title,
-        video: movie.video,
-        voteAverage: movie.voteAverage,
-        voteCount: movie.voteCount,
-        genres: movie.genres,
-      );
-    }).toList();
   }
 
   Future<String> _checkConnectivity() async {
@@ -320,15 +252,18 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   initIsarRepository() async {
     final dir = await getApplicationDocumentsDirectory();
-    _isarRepository = await Isar.open(
+    isar = await Isar.open(
       [MovieSchema],
       name: 'FavoriteMovieRepositoryIsarDB',
       directory: dir.path,
     );
+
+    favoriteMoviesRepository = FavoriteMoviesRepository(isar);
+    GetIt.instance
+        .registerSingleton<FavoriteMoviesRepository>(favoriteMoviesRepository);
   }
 
   Future<List<Movie>> getLocalRepository() async {
-    return await RepositoryIsarInstanceUseCase(_isarRepository)
-        .getAllRepositories();
+    return await favoriteMoviesRepository.getAllRepositories();
   }
 }

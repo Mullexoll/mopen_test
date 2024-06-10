@@ -13,14 +13,12 @@ final class AppLoaded extends AppState {
   final List<Movie> latestMovies;
   final List<Movie> searchedMovies;
   final List<Movie> favoritesMovies;
-  final bool isSearching;
   final String connectionStatus;
 
   AppLoaded({
     required this.topMovies,
     required this.latestMovies,
     required this.searchedMovies,
-    required this.isSearching,
     required this.favoritesMovies,
     required this.connectionStatus,
   });
@@ -30,7 +28,6 @@ final class AppLoaded extends AppState {
     List<Movie>? latestMovies,
     List<Movie>? searchedMovies,
     List<Movie>? favoritesMovies,
-    bool? isSearching,
     String? connectionStatus,
     int? currentTabIndex,
   }) {
@@ -39,7 +36,6 @@ final class AppLoaded extends AppState {
       latestMovies: latestMovies ?? this.latestMovies,
       searchedMovies: searchedMovies ?? this.searchedMovies,
       favoritesMovies: favoritesMovies ?? this.favoritesMovies,
-      isSearching: isSearching ?? this.isSearching,
       connectionStatus: connectionStatus ?? this.connectionStatus,
     );
   }
@@ -50,7 +46,6 @@ final class AppLoaded extends AppState {
         latestMovies,
         searchedMovies,
         favoritesMovies,
-        isSearching,
         connectionStatus,
       ];
 }
