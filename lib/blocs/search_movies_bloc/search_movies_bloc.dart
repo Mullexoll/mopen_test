@@ -32,6 +32,7 @@ class SearchMoviesBloc extends Bloc<SearchMoviesEvent, SearchMoviesState> {
         ) {
     on<FetchSearchedMovies>(_onFetchSearchedMovies);
     on<ClearSearchedList>(_onClearSearchedList);
+    on<AddSearchedMovieToFavorite>(_onAddSearchedMovieToFavorite);
   }
 
   Future<FutureOr<void>> _onFetchSearchedMovies(
@@ -88,5 +89,36 @@ class SearchMoviesBloc extends Bloc<SearchMoviesEvent, SearchMoviesState> {
 
   Future<List<Movie>> getLocalRepository() async {
     return await favoriteMoviesRepository.getAllRepositories();
+  }
+
+  Future<FutureOr<void>> _onAddSearchedMovieToFavorite(
+    AddSearchedMovieToFavorite event,
+    Emitter<SearchMoviesState> emit,
+  ) async {
+    bool isDataWritten = await favoriteMoviesRepository.addToFavorite(
+      movie: Movie.withFavoriteStatus(event.movie, true),
+    );
+
+    if (isDataWritten) {
+      final List<Movie> favoriteRepositories =
+          await favoriteMoviesRepository.getAllRepositories();
+      final List<Movie> searchedMovies = state.searchedMovies;
+      final List<Movie> markedSearchedMovies = markFavorites(
+        listMovie: searchedMovies,
+        favoriteMovies: favoriteRepositories,
+      );
+
+      emit(state.copyWith(searchedMovies: markedSearchedMovies));
+    } else {
+      final _ = await favoriteMoviesRepository.deleteRepository(event.movie.id);
+      final List<Movie> favoriteRepositories =
+          await favoriteMoviesRepository.getAllRepositories();
+      final List<Movie> searchedMovies = state.searchedMovies;
+      final List<Movie> markedSearchedMovies = markFavorites(
+        listMovie: searchedMovies,
+        favoriteMovies: favoriteRepositories,
+      );
+      emit(state.copyWith(searchedMovies: markedSearchedMovies));
+    }
   }
 }

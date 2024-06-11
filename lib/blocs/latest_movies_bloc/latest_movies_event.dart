@@ -8,3 +8,9 @@ class FetchLatestMovies extends LatestMoviesEvent {
 
   FetchLatestMovies({required this.page});
 }
+
+class AddLatestMovieToFavorite extends LatestMoviesEvent {
+  final Movie movie;
+
+  AddLatestMovieToFavorite({required this.movie});
+}

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmdb_project/blocs/search_movies_bloc/search_movies_bloc.dart';
 import 'package:tmdb_project/domain/models/movie.model.dart';
 
 import '../../screens/detail.screen.dart';
@@ -13,6 +15,17 @@ class SearchResultSection extends StatelessWidget {
     required this.movies,
     required this.hasMore,
   });
+
+  void addToFavorite(
+    BuildContext context,
+    Movie movie,
+  ) {
+    BlocProvider.of<SearchMoviesBloc>(context).add(
+      AddSearchedMovieToFavorite(
+        movie: movie,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +59,7 @@ class SearchResultSection extends StatelessWidget {
               },
               child: MovieCardRightSideInfo(
                 movie: movies[index],
+                onTapFavorite: addToFavorite,
               ),
             ),
           );

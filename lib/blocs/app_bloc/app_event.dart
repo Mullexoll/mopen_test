@@ -13,8 +13,4 @@ class FavoriteHandler extends AppEvent {
   FavoriteHandler({required this.movie});
 }
 
-class AddCurrentTabIndex extends AppEvent {
-  final int currentIndex;
-
-  AddCurrentTabIndex({required this.currentIndex});
-}
+class GetFavoriteMovies extends AppEvent {}

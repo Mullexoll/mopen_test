@@ -203,12 +203,12 @@ Movie _movieDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Movie(
-    reader.readBool(offsets[6]),
     adult: reader.readBool(offsets[0]),
     backdropPath: reader.readString(offsets[1]),
     genreIds: reader.readLongList(offsets[2]),
     genres: reader.readStringList(offsets[3]) ?? [],
     id: reader.readLong(offsets[5]),
+    isFavorite: reader.readBool(offsets[6]),
     originalLanguage: reader.readString(offsets[7]),
     originalTitle: reader.readString(offsets[8]),
     overview: reader.readStringOrNull(offsets[9]),

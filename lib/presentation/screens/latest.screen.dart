@@ -12,6 +12,17 @@ import 'detail.screen.dart';
 class LatestScreen extends StatelessWidget {
   const LatestScreen({super.key});
 
+  void addToFavorite(
+    BuildContext context,
+    Movie movie,
+  ) {
+    BlocProvider.of<LatestMoviesBloc>(context).add(
+      AddLatestMovieToFavorite(
+        movie: movie,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +96,7 @@ class LatestScreen extends StatelessWidget {
                             },
                             child: MovieCardWithoutRightSide(
                               movie: movies[index],
+                              onTapFavorite: addToFavorite,
                             ),
                           ),
                         );

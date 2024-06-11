@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:tmdb_project/blocs/search_movies_bloc/search_movies_bloc.dart';
 
+import '../../blocs/app_bloc/app_bloc.dart';
 import 'favorites.screen.dart';
 import 'home.screen.dart';
 import 'search.screen.dart';
@@ -25,6 +28,12 @@ class TabBarScreenState extends State<TabBarScreen> {
     if (_currentIndex == index) {
       _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
     } else {
+      if (index == 2) {
+        BlocProvider.of<AppBloc>(context).add(GetFavoriteMovies());
+      }
+      if (_currentIndex == 1) {
+        BlocProvider.of<SearchMoviesBloc>(context).add(ClearSearchedList());
+      }
       setState(() {
         _currentIndex = index;
       });

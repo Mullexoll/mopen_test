@@ -14,3 +14,9 @@ class FetchSearchedMovies extends SearchMoviesEvent {
 }
 
 class ClearSearchedList extends SearchMoviesEvent {}
+
+class AddSearchedMovieToFavorite extends SearchMoviesEvent {
+  final Movie movie;
+
+  AddSearchedMovieToFavorite({required this.movie});
+}

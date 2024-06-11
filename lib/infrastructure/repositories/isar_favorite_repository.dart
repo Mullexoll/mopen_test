@@ -8,64 +8,21 @@ class FavoriteMoviesRepository {
 
   FavoriteMoviesRepository(this._isar) : _storage = _isar.collection<Movie>();
 
-  Future<bool> addRepositoryToIsar({
-    required Movie repository,
+  Future<bool> addToFavorite({
+    required Movie movie,
   }) async {
     try {
-      final foundRepository = await _storage.get(repository.id);
+      final foundRepository = await _storage.getById(movie.id);
 
-      if (foundRepository == null) {
-        await _isar.writeTxn(() async => await _storage.put(repository));
-      } else {
-        if (foundRepository.isFavorite! &&
-            foundRepository.id == repository.id) {
-          await _isar
-              .writeTxn(() async => await _storage.delete(repository.id));
-        }
-      }
-      return true;
-    } catch (e, s) {
-      print('ERROR $e $s');
-      return false;
-    }
-  }
-
-  Future<bool> addItemToFavorite({
-    required Movie repositoryFavorite,
-  }) async {
-    try {
-      final foundRepository = await _storage.get(repositoryFavorite.id);
-
-      if (foundRepository != null && !foundRepository.isFavorite!) {
-        await _isar.writeTxn(
-          () async => await _storage.delete(repositoryFavorite.id),
-        );
-        await _isar
-            .writeTxn(() async => await _storage.put(repositoryFavorite));
+      if (foundRepository != null) {
+        return false;
       } else {
         await _isar.writeTxn(
-          () async => await _storage.delete(repositoryFavorite.id),
+          () async => await _storage.delete(movie.id),
         );
         await _isar.writeTxn(
           () async => await _storage.put(
-            Movie(
-              repositoryFavorite.isFavorite,
-              id: repositoryFavorite.id,
-              adult: repositoryFavorite.adult,
-              backdropPath: repositoryFavorite.backdropPath,
-              genreIds: repositoryFavorite.genreIds,
-              originalLanguage: repositoryFavorite.originalLanguage,
-              originalTitle: repositoryFavorite.originalTitle,
-              overview: repositoryFavorite.overview,
-              popularity: repositoryFavorite.popularity,
-              posterPath: repositoryFavorite.posterPath,
-              releaseDate: repositoryFavorite.releaseDate,
-              title: repositoryFavorite.title,
-              video: repositoryFavorite.video,
-              voteAverage: repositoryFavorite.voteAverage,
-              voteCount: repositoryFavorite.voteCount,
-              genres: repositoryFavorite.genres,
-            ),
+            Movie.withFavoriteStatus(movie, movie.isFavorite),
           ),
         );
       }

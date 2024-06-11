@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
-import '../../blocs/app_bloc/app_bloc.dart';
 import '../../domain/models/movie.model.dart';
 import 'home_screen_widgets/rating.dart';
 
 class MovieCardRightSideInfo extends StatelessWidget {
   final Movie movie;
+  final Function onTapFavorite;
 
   const MovieCardRightSideInfo({
     super.key,
     required this.movie,
+    required this.onTapFavorite,
   });
 
   @override
@@ -49,11 +49,7 @@ class MovieCardRightSideInfo extends StatelessWidget {
               top: 15,
               right: 15,
               child: InkWell(
-                onTap: () {
-                  final _ = BlocProvider.of<AppBloc>(context).add(
-                    FavoriteHandler(movie: movie),
-                  );
-                },
+                onTap: () => onTapFavorite(context, movie),
                 child: SvgPicture.asset(
                   movie.isFavorite
                       ? 'assets/icons/bookmark_active_icon.svg'

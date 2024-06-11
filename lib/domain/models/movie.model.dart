@@ -24,8 +24,7 @@ class Movie extends Equatable {
   final List<String> genres;
   final bool isFavorite;
 
-  const Movie(
-    this.isFavorite, {
+  const Movie({
     required this.adult,
     required this.backdropPath,
     required this.genreIds,
@@ -41,11 +40,53 @@ class Movie extends Equatable {
     required this.voteAverage,
     required this.voteCount,
     required this.genres,
+    required this.isFavorite,
   });
+
+  factory Movie.withFavoriteStatus(Movie movie, bool isFavorite) {
+    return Movie(
+      isFavorite: isFavorite,
+      id: movie.id,
+      adult: movie.adult,
+      backdropPath: movie.backdropPath,
+      genreIds: movie.genreIds,
+      originalLanguage: movie.originalLanguage,
+      originalTitle: movie.originalTitle,
+      overview: movie.overview,
+      popularity: movie.popularity,
+      posterPath: movie.posterPath,
+      releaseDate: movie.releaseDate,
+      title: movie.title,
+      video: movie.video,
+      voteAverage: movie.voteAverage,
+      voteCount: movie.voteCount,
+      genres: movie.genres,
+    );
+  }
+
+  factory Movie.withGenres(Movie movie, List<String> genres) {
+    return Movie(
+      isFavorite: movie.isFavorite,
+      id: movie.id,
+      adult: movie.adult,
+      backdropPath: movie.backdropPath,
+      genreIds: movie.genreIds,
+      originalLanguage: movie.originalLanguage,
+      originalTitle: movie.originalTitle,
+      overview: movie.overview,
+      popularity: movie.popularity,
+      posterPath: movie.posterPath,
+      releaseDate: movie.releaseDate,
+      title: movie.title,
+      video: movie.video,
+      voteAverage: movie.voteAverage,
+      voteCount: movie.voteCount,
+      genres: genres,
+    );
+  }
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      false,
       adult: json['adult'] ?? false,
       backdropPath: json['backdrop_path'].toString(),
       genreIds: List<int>.from(json['genre_ids']),
@@ -61,6 +102,7 @@ class Movie extends Equatable {
       voteAverage: json['vote_average'].toDouble() ?? 0,
       voteCount: json['vote_count'] ?? 0,
       genres: const [],
+      isFavorite: false,
     );
   }
 
@@ -80,6 +122,7 @@ class Movie extends Equatable {
       'video': video,
       'vote_average': voteAverage,
       'vote_count': voteCount,
+      'isFavorite': isFavorite,
     };
   }
 
@@ -100,5 +143,6 @@ class Movie extends Equatable {
         voteAverage,
         voteCount,
         genres,
+        isFavorite,
       ];
 }

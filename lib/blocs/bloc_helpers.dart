@@ -11,24 +11,7 @@ List<Movie> mapMoviesWithGenres(List<Movie> movies, List<Genre> genres) {
         )
         .toList();
 
-    return Movie(
-      movie.isFavorite,
-      adult: movie.adult,
-      backdropPath: movie.backdropPath,
-      id: movie.id,
-      originalLanguage: movie.originalLanguage,
-      originalTitle: movie.originalTitle,
-      overview: movie.overview,
-      popularity: movie.popularity,
-      posterPath: movie.posterPath,
-      releaseDate: movie.releaseDate,
-      title: movie.title,
-      video: movie.video,
-      voteAverage: movie.voteAverage,
-      voteCount: movie.voteCount,
-      genreIds: movie.genreIds,
-      genres: genreNames ?? [],
-    );
+    return Movie.withGenres(movie, genreNames ?? []);
   }).toList();
 }
 
@@ -41,23 +24,6 @@ List<Movie> markFavorites({
   return listMovie.map((movie) {
     final isFavorite = favoriteTitles.contains(movie.id);
 
-    return Movie(
-      isFavorite,
-      id: movie.id,
-      adult: movie.adult,
-      backdropPath: movie.backdropPath,
-      genreIds: movie.genreIds,
-      originalLanguage: movie.originalLanguage,
-      originalTitle: movie.originalTitle,
-      overview: movie.overview,
-      popularity: movie.popularity,
-      posterPath: movie.posterPath,
-      releaseDate: movie.releaseDate,
-      title: movie.title,
-      video: movie.video,
-      voteAverage: movie.voteAverage,
-      voteCount: movie.voteCount,
-      genres: movie.genres,
-    );
+    return Movie.withFavoriteStatus(movie, isFavorite);
   }).toList();
 }

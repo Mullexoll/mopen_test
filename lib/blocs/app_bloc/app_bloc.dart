@@ -31,6 +31,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<FetchTopMovies>(_onFetchTopMovies);
     on<InitLocalDB>(_onInitLocalDB);
     on<FavoriteHandler>(_onFavoriteHandler);
+    on<GetFavoriteMovies>(_onGetFavoriteMovies);
   }
 
   FutureOr<void> _onFetchTopMovies(
@@ -96,23 +97,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           )
           .toList();
 
-      return Movie(
-        movie.isFavorite,
-        adult: movie.adult,
-        backdropPath: movie.backdropPath,
-        id: movie.id,
-        originalLanguage: movie.originalLanguage,
-        originalTitle: movie.originalTitle,
-        overview: movie.overview,
-        popularity: movie.popularity,
-        posterPath: movie.posterPath,
-        releaseDate: movie.releaseDate,
-        title: movie.title,
-        video: movie.video,
-        voteAverage: movie.voteAverage,
-        voteCount: movie.voteCount,
-        genreIds: movie.genreIds,
-        genres: genreNames ?? [],
+      return Movie.withGenres(
+        movie,
+        genreNames ?? [],
       );
     }).toList();
   }
@@ -147,25 +134,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     FavoriteHandler event,
     Emitter<AppState> emit,
   ) async {
-    bool isDataWritten = await favoriteMoviesRepository.addItemToFavorite(
-      repositoryFavorite: Movie(
-        true,
-        id: event.movie.id,
-        adult: event.movie.adult,
-        backdropPath: event.movie.backdropPath,
-        genreIds: event.movie.genreIds,
-        originalLanguage: event.movie.originalLanguage,
-        originalTitle: event.movie.originalTitle,
-        overview: event.movie.overview,
-        popularity: event.movie.popularity,
-        posterPath: event.movie.posterPath,
-        releaseDate: event.movie.releaseDate,
-        title: event.movie.title,
-        video: event.movie.video,
-        voteAverage: event.movie.voteAverage,
-        voteCount: event.movie.voteCount,
-        genres: event.movie.genres,
-      ),
+    bool isDataWritten = await favoriteMoviesRepository.addToFavorite(
+      movie: Movie.withFavoriteStatus(event.movie, true),
     );
 
     if (isDataWritten) {
@@ -265,5 +235,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   Future<List<Movie>> getLocalRepository() async {
     return await favoriteMoviesRepository.getAllRepositories();
+  }
+
+  Future<FutureOr<void>> _onGetFavoriteMovies(
+    GetFavoriteMovies event,
+    Emitter<AppState> emit,
+  ) async {
+    final List<Movie> favoriteRepositories = await getLocalRepository();
+
+    emit((state as AppLoaded).copyWith(favoritesMovies: favoriteRepositories));
   }
 }

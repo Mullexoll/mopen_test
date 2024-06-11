@@ -3,12 +3,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:tmdb_project/blocs/latest_movies_bloc/latest_movies_bloc.dart';
 
+import '../../../domain/models/movie.model.dart';
 import '../../screens/detail.screen.dart';
 import '../../screens/latest.screen.dart';
 import '../movie_card_right_side_info.dart';
 
 class LatestSection extends StatelessWidget {
   const LatestSection({super.key});
+
+  void addToFavorite(
+    BuildContext context,
+    Movie movie,
+  ) {
+    BlocProvider.of<LatestMoviesBloc>(context).add(
+      AddLatestMovieToFavorite(
+        movie: movie,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +84,7 @@ class LatestSection extends StatelessWidget {
                     },
                     child: MovieCardRightSideInfo(
                       movie: state.latestMovies[index],
+                      onTapFavorite: addToFavorite,
                     ),
                   ),
                 );

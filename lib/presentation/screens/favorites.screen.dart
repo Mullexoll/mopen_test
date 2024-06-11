@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gap/gap.dart';
 
 import '../../blocs/app_bloc/app_bloc.dart';
+import '../../domain/models/movie.model.dart';
 import '../widgets/movie_card_right_side_info.dart';
 import '../widgets/screens_header.dart';
 import 'detail.screen.dart';
@@ -15,6 +16,17 @@ class FavoritesScreen extends StatelessWidget {
     super.key,
     required this.onWillPop,
   });
+
+  void addToFavorite(
+    BuildContext context,
+    Movie movie,
+  ) {
+    BlocProvider.of<AppBloc>(context).add(
+      FavoriteHandler(
+        movie: movie,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +64,7 @@ class FavoritesScreen extends StatelessWidget {
                     child: MovieCardRightSideInfo(
                       movie: (context.watch<AppBloc>().state as AppLoaded)
                           .favoritesMovies[index],
+                      onTapFavorite: addToFavorite,
                     ),
                   ),
                 );
